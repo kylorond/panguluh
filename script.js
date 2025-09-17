@@ -1,4 +1,169 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+            const translations = {
+                en: {
+                    welcomeTitle: "Welcome!",
+                    welcomeSubtitle: "This application is designed to help you make complex decisions using the Simple Additive Weighting (SAW) method. Define criteria, assign weights, evaluate alternatives, and get an objective final ranking.",
+                    guideTitle: "Complete User Guide",
+                    step1Title: "Set a Title",
+                    step1Desc: "Enter a clear title to provide context for your analysis. Example: \"Best Laptop for Design\".",
+                    step2Title: "Input Criteria",
+                    step2Desc: "Define the determining factors. <strong>Weight</strong> indicates importance (total must be <strong>100</strong>). Choose <strong>Benefit</strong> (higher is better) or <strong>Cost</strong> (lower is better).",
+                    step3Title: "Input Alternatives",
+                    step3Desc: "List all the options to be evaluated. Example: \"Laptop A\", \"Laptop B\", \"Laptop C\".",
+                    step4Title: "Fill Matrix & Save",
+                    step4Desc: "Score each alternative based on the criteria. When finished, you <strong>must click \"Save All Scores\"</strong>.",
+                    step5Title: "Calculate & Analyze",
+                    step5Desc: "Click the \"Calculate & Show Ranking\" button to see the final results, ranks, and best recommendation.",
+                    decisionTitleLabel: "Your Decision Title",
+                    decisionTitlePlaceholder: "Example: Best Smartphone of 2025",
+                    criteriaTitle: "1. Input Criteria & Weights",
+                    criteriaNameLabel: "Criterion Name",
+                    weightLabel: "Weight (Total must be 100)",
+                    typeLabel: "Attribute Type",
+                    benefitOption: "Benefit (Higher is better)",
+                    costOption: "Cost (Lower is better)",
+                    addCriterionButton: "Add Criterion",
+                    alternativesTitle: "2. Input Alternatives",
+                    alternativeNameLabel: "Alternative Name",
+                    alternativesListTitle: "List of Alternatives",
+                    matrixTitle: "3. Input Decision Matrix",
+                    matrixDesc: "Enter a value for each alternative against each criterion, then click \"Save Scores\" before calculating.",
+                    saveScoresButton: "Save All Scores",
+                    resultsTitle: "4. SAW Calculation Process & Results",
+                    calculateButton: "Calculate & Show Ranking",
+                    rankingTitle: "Ranking Results:",
+                    criteriaListTitle: "Your Criteria List",
+                    summaryTitle: "Conclusion & Recommendation",
+                    summaryPlaceholder: "The conclusion will appear here after the calculation is performed.",
+                    resetTitle: "Start Over?",
+                    resetDesc: "This action will delete all the data you have entered.",
+                    resetButton: "Reset All Data",
+                    nameHeader: "Name",
+                    weightHeader: "Weight",
+                    typeHeader: "Type",
+                    rankHeader: "Rank",
+                    alternativeHeader: "Alternative",
+                    sawScoreHeader: "SAW Score",
+                    footerText: "© {year} DSS Application with SAW Method. Created by {author}.",
+                    remainingWeightInfo: "Remaining: {value} of {total}.",
+                    weightGoalReached: "Total weight has reached {total}. Ready to calculate.",
+                    weightExceeded: "Total weight ({current}) exceeds target {total}.",
+                    toastCriterionAdded: "Criterion '{name}' added successfully.",
+                    toastAlternativeAdded: "Alternative '{name}' added successfully.",
+                    toastScoresSaved: "All scores saved successfully.",
+                    toastSaveFailed: "Failed to save scores, check invalid inputs.",
+                    toastCalculationSuccess: "SAW calculation successful!",
+                    toastGenericError: "Invalid input!",
+                    confirmReset: "Are you sure you want to reset all data? This action cannot be undone.",
+                    errorCriterionName: "Criterion name cannot be empty.",
+                    errorWeightPositive: "Weight must be a positive number.",
+                    errorCriterionExists: "Criterion '{name}' already exists.",
+                    errorWeightBudget: "Weight exceeds the remaining budget.",
+                    errorAlternativeName: "Alternative name cannot be empty.",
+                    errorAlternativeExists: "Alternative '{name}' already exists.",
+                    errorInvalidScore: "The score for {altName} - {critName} is invalid. Please enter numbers only.",
+                    errorEmptyScore: "The score for {altName} - {critName} cannot be empty.",
+                    errorNoCriteria: "Please add criteria first.",
+                    errorNoAlternatives: "Please add alternatives first.",
+                    errorWeightTotal: "Total weight must be exactly {total}.",
+                    errorScoresNotSaved: "The score for {altName} - {critName} has not been saved.",
+                    summaryBestIs: "Based on the calculation, the best alternative is",
+                    summaryWithValue: "with the highest preference value of",
+                    summaryForDecision: "for the decision <strong>\"{title}\"</strong>",
+                    summaryRecommendationTitle: "Best Recommendation",
+                    summaryConsiderationTitle: "Consideration Details:",
+                    summaryScoreForCriterion: "<li>For the <strong>{critName}</strong> criterion, the score is <strong>{score}</strong>.",
+                    summaryOutperformed: "<span class=\"text-xs opacity-80\">(Alternative <strong>{performers}</strong> performed better here with a score of <strong>{bestScore}</strong>).</span>",
+                    noCriteria: "No criteria added.",
+                    noAlternatives: "No alternatives added.",
+                    noMatrix: "Please add criteria and alternatives to fill the score matrix.",
+                    noResults: "No results to display. Check your score inputs.",
+                },
+                id: {
+                    welcomeTitle: "Selamat Datang!",
+                    welcomeSubtitle: "Aplikasi ini dirancang untuk membantu Anda mengambil keputusan kompleks menggunakan metode <strong class=\"text-primary\">Simple Additive Weighting (SAW)</strong>. Definisikan kriteria, beri bobot, nilai alternatif, dan dapatkan peringkat akhir yang objektif.",
+                    guideTitle: "Panduan Lengkap Penggunaan",
+                    step1Title: "Tentukan Judul",
+                    step1Desc: "Isi judul yang jelas untuk memberikan konteks pada analisis Anda. Contoh: \"Pemilihan Laptop Desain\".",
+                    step2Title: "Input Kriteria",
+                    step2Desc: "Tentukan faktor penentu. <strong>Bobot</strong> menandakan tingkat kepentingan (total harus <strong>100</strong>). Pilih jenis <strong>Benefit</strong> (lebih tinggi lebih baik) atau <strong>Cost</strong> (lebih rendah lebih baik).",
+                    step3Title: "Input Alternatif",
+                    step3Desc: "Daftarkan semua pilihan yang akan dievaluasi. Contoh: \"Laptop A\", \"Laptop B\", \"Laptop C\".",
+                    step4Title: "Isi Matriks & Simpan",
+                    step4Desc: "Beri skor pada setiap alternatif berdasarkan kriteria. Setelah selesai, <strong>wajib klik \"Simpan Semua Skor\"</strong>.",
+                    step5Title: "Hitung & Analisis",
+                    step5Desc: "Klik tombol \"Hitung & Tampilkan Peringkat\" untuk melihat hasil akhir, peringkat, dan rekomendasi terbaik.",
+                    decisionTitleLabel: "Judul Keputusan Anda",
+                    decisionTitlePlaceholder: "Contoh: Pemilihan Smartphone Terbaik 2025",
+                    criteriaTitle: "1. Input Kriteria & Bobot",
+                    criteriaNameLabel: "Nama Kriteria",
+                    weightLabel: "Bobot (Total Harus 100)",
+                    typeLabel: "Jenis Atribut",
+                    benefitOption: "Benefit (Makin besar makin baik)",
+                    costOption: "Cost (Makin kecil makin baik)",
+                    addCriterionButton: "Tambah Kriteria",
+                    alternativesTitle: "2. Input Alternatif",
+                    alternativeNameLabel: "Nama Alternatif",
+                    alternativesListTitle: "Daftar Alternatif:",
+                    matrixTitle: "3. Input Matriks Keputusan",
+                    matrixDesc: "Masukkan nilai untuk setiap alternatif, lalu klik \"Simpan Skor\" sebelum menghitung.",
+                    saveScoresButton: "Simpan Semua Skor",
+                    resultsTitle: "4. Proses Perhitungan & Hasil",
+                    calculateButton: "Hitung & Tampilkan Peringkat",
+                    rankingTitle: "Hasil Peringkat:",
+                    criteriaListTitle: "Daftar Kriteria Anda",
+                    summaryTitle: "Kesimpulan & Rekomendasi",
+                    summaryPlaceholder: "Kesimpulan akan muncul di sini setelah perhitungan dilakukan.",
+                    resetTitle: "Mulai Ulang?",
+                    resetDesc: "Aksi ini akan menghapus semua data yang telah Anda masukkan.",
+                    resetButton: "Reset Semua Data",
+                    nameHeader: "Nama",
+                    weightHeader: "Bobot",
+                    typeHeader: "Jenis",
+                    rankHeader: "Peringkat",
+                    alternativeHeader: "Alternatif",
+                    sawScoreHeader: "Nilai SAW",
+                    footerText: "© {year} Aplikasi SPK Metode SAW. Dibuat oleh {author}.",
+                    remainingWeightInfo: "Sisa: {value} dari {total}.",
+                    weightGoalReached: "Total bobot sudah mencapai {total}. Siap untuk menghitung.",
+                    weightExceeded: "Total bobot ({current}) melebihi target {total}.",
+                    toastCriterionAdded: "Kriteria '{name}' berhasil ditambahkan.",
+                    toastAlternativeAdded: "Alternatif '{name}' berhasil ditambahkan.",
+                    toastScoresSaved: "Semua skor berhasil disimpan.",
+                    toastSaveFailed: "Gagal menyimpan skor, periksa input yang salah.",
+                    toastCalculationSuccess: "Perhitungan SAW berhasil!",
+                    toastGenericError: "Input tidak valid!",
+                    confirmReset: "Apakah Anda yakin ingin mereset semua data? Aksi ini tidak dapat dibatalkan.",
+                    errorCriterionName: "Nama kriteria tidak boleh kosong.",
+                    errorWeightPositive: "Bobot harus angka positif.",
+                    errorCriterionExists: "Kriteria '{name}' sudah ada.",
+                    errorWeightBudget: "Bobot melebihi sisa budget.",
+                    errorAlternativeName: "Nama alternatif tidak boleh kosong.",
+                    errorAlternativeExists: "Alternatif '{name}' sudah ada.",
+                    errorInvalidScore: "Nilai untuk {altName} - {critName} tidak valid. Harap isi dengan angka.",
+                    errorEmptyScore: "Skor untuk {altName} - {critName} tidak boleh kosong.",
+                    errorNoCriteria: "Mohon tambahkan kriteria terlebih dahulu.",
+                    errorNoAlternatives: "Mohon tambahkan alternatif terlebih dahulu.",
+                    errorWeightTotal: "Total bobot harus tepat {total}.",
+                    errorScoresNotSaved: "Skor untuk {altName} - {critName} belum disimpan.",
+                    summaryBestIs: "Berdasarkan perhitungan, alternatif terbaik adalah",
+                    summaryWithValue: "dengan nilai preferensi tertinggi sebesar",
+                    summaryForDecision: "untuk keputusan <strong>\"{title}\"</strong>",
+                    summaryRecommendationTitle: "Rekomendasi Terbaik",
+                    summaryConsiderationTitle: "Detail Pertimbangan:",
+                    summaryScoreForCriterion: "<li>Pada kriteria <strong>{critName}</strong>, skornya adalah <strong>{score}</strong>.",
+                    summaryOutperformed: "<span class=\"text-xs opacity-80\">(Alternatif <strong>{performers}</strong> lebih unggul di sini dengan skor <strong>{bestScore}</strong>).</span>",
+                    noCriteria: "Belum ada kriteria ditambahkan.",
+                    noAlternatives: "Belum ada alternatif ditambahkan.",
+                    noMatrix: "Silakan tambahkan kriteria dan alternatif untuk mengisi matriks skor.",
+                    noResults: "Tidak ada hasil peringkat. Periksa input skor Anda.",
+                }
+            };
+
+            let currentLanguage = localStorage.getItem('language') || 'id';
+
+            const langToggleBtn = document.getElementById('lang-toggle');
+
             const decisionTitleInput = document.getElementById('decision_title');
             const formKriteria = document.getElementById('formKriteria');
             const criterionWeightInput = document.getElementById('criterion_weight');
@@ -19,99 +184,111 @@ document.addEventListener('DOMContentLoaded', function() {
             const calculationErrorDiv = document.getElementById('calculationError');
             const resetAllButton = document.getElementById('resetAllButton');
             const toastContainer = document.getElementById('toast-container');
-            const summarySectionContent = document.getElementById('summarySectionContent'); 
+            const summarySectionContent = document.getElementById('summarySectionContent');
             document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-            const totalWeightCap = 100; 
-            let currentAllocatedWeight = 0; 
-            let currentDecisionTitle = ""; 
-            let criteria = []; 
-            let alternatives = []; 
+            const totalWeightCap = 100;
+            let currentAllocatedWeight = 0;
+            let currentDecisionTitle = "";
+            let criteria = [];
+            let alternatives = [];
 
-            decisionTitleInput.addEventListener('input', function(event) {
+            function translatePage(lang) {
+                document.querySelectorAll('[data-lang-key]').forEach(el => {
+                    const key = el.dataset.langKey;
+                    const translation = translations[lang][key];
+                    if (translation) {
+                        if (el.tagName === 'INPUT' && el.placeholder) {
+                            el.placeholder = translation;
+                        } else {
+                            el.innerHTML = translation;
+                        }
+                    }
+                });
+                updateWeightInputState();
+                renderCriteriaTable();
+                renderAlternativesList();
+            }
+
+            langToggleBtn.addEventListener('click', () => {
+                currentLanguage = currentLanguage === 'id' ? 'en' : 'id';
+                langToggleBtn.textContent = currentLanguage === 'id' ? 'EN' : 'ID';
+                localStorage.setItem('language', currentLanguage);
+                translatePage(currentLanguage);
+            });
+
+            langToggleBtn.textContent = currentLanguage === 'id' ? 'EN' : 'ID';
+
+            translatePage(currentLanguage);
+
+            decisionTitleInput.addEventListener('input', function (event) {
                 currentDecisionTitle = event.target.value.trim();
             });
 
+            formKriteria.addEventListener('submit', handleAddCriterion);
+            formAlternatif.addEventListener('submit', handleAddAlternative);
+            saveScoresButton.addEventListener('click', handleSaveScores);
+            hitungSawButton.addEventListener('click', handleCalculateSAW);
+            resetAllButton.addEventListener('click', handleResetAll);
+
             function updateWeightInputState() {
                 const remainingBudget = parseFloat((totalWeightCap - currentAllocatedWeight).toFixed(10));
-                criterionWeightInput.max = Math.max(0, remainingBudget).toFixed(10); 
-
-                const budgetIsFullOrExceeded = remainingBudget <= 1e-9; 
+                criterionWeightInput.max = Math.max(0, remainingBudget).toFixed(10);
+                const budgetIsFullOrExceeded = remainingBudget <= 1e-9;
                 const budgetExactlyMet = Math.abs(currentAllocatedWeight - totalWeightCap) < 1e-9;
-
                 criterionWeightInput.disabled = budgetIsFullOrExceeded;
                 addCriterionButton.disabled = budgetIsFullOrExceeded;
-                
-                hitungSawButton.disabled = !(criteria.length > 0 && alternatives.length > 0 && budgetExactlyMet);
-
-
-                criterionWeightInput.classList.toggle('opacity-50', budgetIsFullOrExceeded);
-                criterionWeightInput.classList.toggle('cursor-not-allowed', budgetIsFullOrExceeded);
-                criterionWeightInput.classList.toggle('bg-gray-100', budgetIsFullOrExceeded);
-
-
-                addCriterionButton.classList.toggle('opacity-50', budgetIsFullOrExceeded);
-                addCriterionButton.classList.toggle('cursor-not-allowed', budgetIsFullOrExceeded);
-                
-                if(budgetIsFullOrExceeded){
-                    addCriterionButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-                    addCriterionButton.classList.add('bg-gray-400', 'hover:bg-gray-400');
-                } else {
-                     addCriterionButton.classList.remove('bg-gray-400', 'hover:bg-gray-400');
-                     addCriterionButton.classList.add('bg-blue-600', 'hover:bg-blue-700');
-                }
-
+                const allScoresSaved = alternatives.every(alt =>
+                    criteria.every(crit => alt.scores[crit.name] !== undefined)
+                );
+                hitungSawButton.disabled = !(criteria.length > 0 && alternatives.length > 0 && budgetExactlyMet && allScoresSaved);
                 if (budgetExactlyMet) {
-                    remainingWeightInfoSpan.textContent = `Total bobot sudah mencapai ${totalWeightCap}. Siap untuk menghitung.`;
-                    remainingWeightInfoSpan.className = 'text-xs text-green-600 mt-1.5 block font-medium';
-                    addCriterionButton.disabled = true; 
-                    criterionWeightInput.disabled = true;
-                    addCriterionButton.classList.add('opacity-50', 'cursor-not-allowed', 'bg-gray-400', 'hover:bg-gray-400');
-                    addCriterionButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-
+                    remainingWeightInfoSpan.textContent = translations[currentLanguage].weightGoalReached.replace('{total}', totalWeightCap);
+                    remainingWeightInfoSpan.className = 'text-xs text-emerald-600 mt-1.5 block font-medium';
                 } else if (currentAllocatedWeight > totalWeightCap) {
-                    remainingWeightInfoSpan.textContent = `Total bobot (${currentAllocatedWeight.toFixed(2)}) melebihi target ${totalWeightCap}. Harap perbaiki.`;
+                    remainingWeightInfoSpan.textContent = translations[currentLanguage].weightExceeded.replace('{current}', currentAllocatedWeight.toFixed(2)).replace('{total}', totalWeightCap);
                     remainingWeightInfoSpan.className = 'text-xs text-rose-500 mt-1.5 block font-medium';
-                } else { 
-                    remainingWeightInfoSpan.textContent = `Sisa budget: ${remainingBudget.toFixed(2)} dari ${totalWeightCap}. (Maks input: ${parseFloat(criterionWeightInput.max).toFixed(2)})`;
-                    remainingWeightInfoSpan.className = 'text-xs text-gray-500 mt-1.5 block';
+                } else {
+                    remainingWeightInfoSpan.textContent = translations[currentLanguage].remainingWeightInfo.replace('{value}', remainingBudget.toFixed(2)).replace('{total}', totalWeightCap);
+                    remainingWeightInfoSpan.className = 'text-xs text-slate-500 mt-1.5 block';
                 }
             }
 
-
             function showToast(message, type = 'success') {
                 const toast = document.createElement('div');
-                toast.className = `toast p-4 rounded-lg text-white mb-3 w-full ${type === 'success' ? 'bg-green-500' : 'bg-rose-500'}`;
-                toast.textContent = message;
+                const icon = type === 'success' ? '✓' : '×';
+                const bgColor = type === 'success' ? 'bg-emerald-500' : 'bg-rose-500';
+                toast.className = `toast p-4 rounded-lg text-white mb-3 w-full flex items-center gap-3 ${bgColor}`;
+                toast.innerHTML = `<span class="font-bold text-lg">${icon}</span><span>${message}</span>`;
                 toastContainer.appendChild(toast);
                 setTimeout(() => {
                     toast.style.opacity = '0';
                     toast.style.transform = 'translateY(20px)';
-                    setTimeout(() => toast.remove(), 300); 
+                    setTimeout(() => toast.remove(), 300);
                 }, 2700);
             }
 
             function renderCriteriaTable() {
                 tabelKriteriaBody.innerHTML = '';
                 if (criteria.length === 0) {
-                    tabelKriteriaBody.innerHTML = '<tr><td colspan="3" class="px-6 py-4 text-center text-sm text-gray-500 italic">Belum ada kriteria ditambahkan.</td></tr>';
+                    tabelKriteriaBody.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-sm text-slate-500 italic">${translations[currentLanguage].noCriteria}</td></tr>`;
                 } else {
                     criteria.forEach(c => {
                         const row = tabelKriteriaBody.insertRow();
-                        row.className = "table-row-hover transition-colors duration-150";
+                        row.className = "hover:bg-slate-50 transition-colors duration-150 text-sm";
                         row.insertCell().textContent = c.name;
                         row.insertCell().textContent = c.weight;
-                        row.insertCell().textContent = c.type.charAt(0).toUpperCase() + c.type.slice(1); 
+                        row.insertCell().textContent = c.type.charAt(0).toUpperCase() + c.type.slice(1);
                     });
                 }
-                renderScoreMatrix(); 
+                renderScoreMatrix();
                 updateWeightInputState();
             }
 
             function renderAlternativesList() {
                 daftarAlternatifUl.innerHTML = '';
-                 if (alternatives.length === 0) {
-                    daftarAlternatifUl.innerHTML = '<li class="text-sm text-gray-500 italic">Belum ada alternatif ditambahkan.</li>';
+                if (alternatives.length === 0) {
+                    daftarAlternatifUl.innerHTML = `<li class="text-sm text-slate-500 italic">${translations[currentLanguage].noAlternatives}</li>`;
                 } else {
                     alternatives.forEach(alt => {
                         const li = document.createElement('li');
@@ -120,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         daftarAlternatifUl.appendChild(li);
                     });
                 }
-                renderScoreMatrix(); 
+                renderScoreMatrix();
                 updateWeightInputState();
             }
 
@@ -128,46 +305,38 @@ document.addEventListener('DOMContentLoaded', function() {
                 tabelMatriksKeputusanHead.innerHTML = '';
                 tabelMatriksKeputusanBody.innerHTML = '';
                 matriksErrorDiv.textContent = '';
-
                 if (criteria.length === 0 || alternatives.length === 0) {
-                    tabelMatriksKeputusanHead.innerHTML = '<tr><td class="px-6 py-10 text-center text-sm text-gray-500 italic" colspan="100%">Silakan tambahkan kriteria dan alternatif terlebih dahulu untuk mengisi matriks skor.</td></tr>';
+                    tabelMatriksKeputusanHead.innerHTML = `<tr><td class="px-6 py-10 text-center text-sm text-slate-500 italic" colspan="100%">${translations[currentLanguage].noMatrix}</td></tr>`;
                     saveScoresButton.classList.add('hidden');
-                    summarySectionContent.innerHTML = '<p class="italic text-sm">Kesimpulan akan muncul di sini setelah perhitungan dilakukan.</p>';
-                    summarySectionContent.classList.add('hidden'); 
+                     document.querySelector('[data-lang-key="summaryPlaceholder"]').textContent = translations[currentLanguage].summaryPlaceholder;
                     hitungSawButton.disabled = true;
                     return;
                 }
                 saveScoresButton.classList.remove('hidden');
-                summarySectionContent.classList.remove('hidden'); 
-                summarySectionContent.innerHTML = '<p class="italic text-sm">Kesimpulan akan muncul di sini setelah perhitungan dilakukan.</p>';
-
                 const headerRow = tabelMatriksKeputusanHead.insertRow();
                 const thAlt = document.createElement('th');
-                thAlt.className = "px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider";
-                thAlt.textContent = 'Alternatif';
+                thAlt.className = "px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider";
+                thAlt.textContent = translations[currentLanguage].alternativeHeader;
                 headerRow.appendChild(thAlt);
-
                 criteria.forEach(c => {
                     const thCrit = document.createElement('th');
-                    thCrit.className = "px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider";
+                    thCrit.className = "px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider";
                     thCrit.textContent = c.name;
                     headerRow.appendChild(thCrit);
                 });
-
                 alternatives.forEach(alt => {
                     const altRow = tabelMatriksKeputusanBody.insertRow();
-                    altRow.className = "table-row-hover transition-colors duration-150";
+                    altRow.className = "hover:bg-slate-50 transition-colors duration-150";
                     const cellAltName = altRow.insertCell();
-                    cellAltName.className = "px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800";
+                    cellAltName.className = "px-6 py-4 whitespace-nowrap text-sm font-medium";
                     cellAltName.textContent = alt.name;
-
                     criteria.forEach(crit => {
                         const cell = altRow.insertCell();
-                        cell.className = "px-6 py-4 whitespace-nowrap text-sm text-gray-700";
+                        cell.className = "px-6 py-4 whitespace-nowrap text-sm";
                         const input = document.createElement('input');
                         input.type = 'number';
                         input.step = 'any';
-                        input.className = 'input-field score-input mt-1 block w-20 px-3 py-2 rounded-md shadow-sm focus:outline-none focus:ring-1 sm:text-sm transition-all duration-150 ease-in-out hover:shadow-sm';
+                        input.className = 'input-field score-input block w-24 px-3 py-2 sm:text-sm';
                         input.dataset.altName = alt.name;
                         input.dataset.critName = crit.name;
                         input.value = alt.scores[crit.name] !== undefined ? alt.scores[crit.name] : '';
@@ -177,308 +346,181 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 updateWeightInputState();
             }
-            
+
             function renderResultsTable(results) {
                 tabelHasilBody.innerHTML = '';
-                summarySectionContent.innerHTML = ''; 
+                summarySectionContent.innerHTML = '';
                 calculationErrorDiv.textContent = '';
-
                 if (!results || results.length === 0) {
-                    calculationErrorDiv.textContent = 'Tidak ada hasil untuk ditampilkan.';
-                    summarySectionContent.innerHTML = '<p class="italic text-sm">Tidak ada kesimpulan karena tidak ada hasil.</p>';
-                     if (criteria.length > 0 && alternatives.length > 0) {
-                        tabelHasilBody.innerHTML = '<tr><td colspan="3" class="px-6 py-4 text-center text-sm text-gray-500 italic">Tidak ada hasil peringkat yang dapat ditampilkan. Periksa input skor Anda.</td></tr>';
-                    }
+                     tabelHasilBody.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-sm text-slate-500 italic">${translations[currentLanguage].noResults}</td></tr>`;
+                     summarySectionContent.innerHTML = `<p class="italic text-sm text-slate-500">${translations[currentLanguage].summaryPlaceholder.replace('dilakukan.', 'tidak ada hasil.')}</p>`;
                     return;
                 }
-                
                 results.forEach(res => {
                     const row = tabelHasilBody.insertRow();
-                    row.className = res.rank === 1 ? "highlight-row" : "table-row-hover";
+                    row.className = res.rank === 1 ? "highlight-row" : "hover:bg-slate-50";
                     const rankCell = row.insertCell();
-                    rankCell.className = "px-6 py-4 whitespace-nowrap text-sm font-medium " + (res.rank === 1 ? "highlight-text" : "text-gray-800");
+                    rankCell.className = "px-6 py-4 whitespace-nowrap text-sm font-medium " + (res.rank === 1 ? "highlight-text" : "");
                     rankCell.textContent = res.rank;
-                    
                     const nameCell = row.insertCell();
-                    nameCell.className = "px-6 py-4 whitespace-nowrap text-sm " + (res.rank === 1 ? "highlight-text font-semibold" : "text-gray-700");
+                    nameCell.className = "px-6 py-4 whitespace-nowrap text-sm " + (res.rank === 1 ? "highlight-text font-semibold" : "");
                     nameCell.textContent = res.alternativeName;
-
                     const scoreCell = row.insertCell();
-                    scoreCell.className = "px-6 py-4 whitespace-nowrap text-sm " + (res.rank === 1 ? "highlight-text font-semibold" : "text-gray-500");
-                    scoreCell.textContent = res.sawScore.toFixed(4); 
+                    scoreCell.className = "px-6 py-4 whitespace-nowrap text-sm " + (res.rank === 1 ? "highlight-text font-semibold" : "text-slate-500");
+                    scoreCell.textContent = res.sawScore.toFixed(4);
                 });
-
-                if (results.length > 0) {
-                    const bestAlternative = results[0]; 
-                    const bestAlternativeDetails = alternatives.find(alt => alt.name === bestAlternative.alternativeName);
-                    let considerationDetailsHTML = '<ul class="list-disc list-inside mt-2 space-y-1 text-sm text-gray-600">';
-
-                    criteria.forEach(crit => {
-                        const currentAltScoreForCrit = bestAlternativeDetails.scores[crit.name];
-                        let bestPossibleScoreOnThisCrit;
-                        let topPerformersOnThisCrit = [];
-
-                        if (crit.type === 'benefit') {
-                            bestPossibleScoreOnThisCrit = -Infinity;
-                            alternatives.forEach(alt => {
-                                const score = alt.scores[crit.name];
-                                if (score > bestPossibleScoreOnThisCrit) {
-                                    bestPossibleScoreOnThisCrit = score;
-                                    topPerformersOnThisCrit = [alt.name];
-                                } else if (score === bestPossibleScoreOnThisCrit) {
-                                    topPerformersOnThisCrit.push(alt.name);
-                                }
-                            });
-                        } else { 
-                            bestPossibleScoreOnThisCrit = Infinity;
-                            alternatives.forEach(alt => {
-                                const score = alt.scores[crit.name];
-                                if (score < bestPossibleScoreOnThisCrit) {
-                                    bestPossibleScoreOnThisCrit = score;
-                                    topPerformersOnThisCrit = [alt.name];
-                                } else if (score === bestPossibleScoreOnThisCrit) {
-                                    topPerformersOnThisCrit.push(alt.name);
-                                }
-                            });
-                        }
-
-                        let scoreInfo = `<li>Pada kriteria <strong>${crit.name}</strong> (${crit.type}), skor yang diperoleh adalah: <strong>${currentAltScoreForCrit !== undefined ? currentAltScoreForCrit : 'N/A'}</strong>.`;
-                        
-                        const isCurrentAltTopForCrit = topPerformersOnThisCrit.includes(bestAlternative.alternativeName) && Math.abs(currentAltScoreForCrit - bestPossibleScoreOnThisCrit) < 1e-9;
-
-                        if (Math.abs(currentAltScoreForCrit - bestPossibleScoreOnThisCrit) > 1e-9) {
-                            if (topPerformersOnThisCrit.length > 0) {
-                                 scoreInfo += ` <span class="text-xs text-gray-500">(Catatan: Alternatif <strong>${topPerformersOnThisCrit.join(', ')}</strong> lebih unggul pada kriteria ini dengan skor <strong>${bestPossibleScoreOnThisCrit}</strong>).</span>`;
-                            }
-                        } else if (isCurrentAltTopForCrit && topPerformersOnThisCrit.length > 1) {
-                            const otherSharedTopPerformers = topPerformersOnThisCrit.filter(name => name !== bestAlternative.alternativeName);
-                            if (otherSharedTopPerformers.length > 0) {
-                                scoreInfo += ` <span class="text-xs text-gray-500">(Catatan: Juga dicapai oleh <strong>${otherSharedTopPerformers.join(', ')}</strong> pada kriteria ini).</span>`;
-                            }
-                        }
-                        scoreInfo += '</li>';
-                        considerationDetailsHTML += scoreInfo;
-                    });
-                    considerationDetailsHTML += '</ul>';
-
-                    const decisionContext = currentDecisionTitle ? ` untuk keputusan <strong class="text-blue-600">${currentDecisionTitle}</strong>` : "";
-                    summarySectionContent.innerHTML = `
-                        <h4 class="font-semibold text-lg mb-2 text-blue-600" style="font-family: 'Roboto Slab', serif;">Kesimpulan Analisis${decisionContext.replace(/<strong class="text-blue-600">/g, `<strong class="text-blue-600 font-bold">`)}:</h4>
-                        <p class="text-sm text-gray-700">Berdasarkan perhitungan menggunakan metode Simple Additive Weighting (SAW), alternatif terbaik yang direkomendasikan adalah 
-                           <strong class="font-bold text-green-600">${bestAlternative.alternativeName}</strong> 
-                           dengan nilai preferensi tertinggi sebesar 
-                           <strong class="font-bold text-green-600">${bestAlternative.sawScore.toFixed(4)}</strong>.
-                        </p>
-                        <p class="mt-2 text-xs text-gray-500">Alternatif ini mendapatkan peringkat pertama dan dianggap sebagai pilihan yang paling optimal berdasarkan kriteria dan bobot yang telah ditentukan.</p>
-                        <hr class="my-3 border-blue-200">
-                        <h5 class="font-semibold text-md mb-1 text-blue-600" style="font-family: 'Roboto Slab', serif;">Saran Pertimbangan untuk ${bestAlternative.alternativeName}:</h5>
-                        ${considerationDetailsHTML}
-                    `;
-                } else {
-                     summarySectionContent.innerHTML = '<p class="italic text-sm">Tidak ada kesimpulan karena tidak ada hasil peringkat.</p>';
-                }
+                const bestAlternative = results[0];
+                const bestAlternativeDetails = alternatives.find(alt => alt.name === bestAlternative.alternativeName);
+                let considerationDetailsHTML = '<ul class="list-disc list-inside mt-2 space-y-1 text-sm">';
+                criteria.forEach(crit => {
+                    const currentAltScoreForCrit = bestAlternativeDetails.scores[crit.name];
+                    let bestPossibleScoreOnThisCrit;
+                    let topPerformersOnThisCrit = [];
+                    const allScoresForCrit = alternatives.map(alt => alt.scores[crit.name]);
+                    if (crit.type === 'benefit') {
+                        bestPossibleScoreOnThisCrit = Math.max(...allScoresForCrit);
+                    } else {
+                        bestPossibleScoreOnThisCrit = Math.min(...allScoresForCrit);
+                    }
+                    topPerformersOnThisCrit = alternatives.filter(alt => Math.abs(alt.scores[crit.name] - bestPossibleScoreOnThisCrit) < 1e-9).map(alt => alt.name);
+                    let scoreInfo = translations[currentLanguage].summaryScoreForCriterion.replace('{critName}', crit.name).replace('{score}', currentAltScoreForCrit ?? 'N/A');
+                    if (!topPerformersOnThisCrit.includes(bestAlternative.alternativeName)) {
+                        scoreInfo += " " + translations[currentLanguage].summaryOutperformed.replace('{performers}', topPerformersOnThisCrit.join(', ')).replace('{bestScore}', bestPossibleScoreOnThisCrit);
+                    }
+                    scoreInfo += '</li>';
+                    considerationDetailsHTML += scoreInfo;
+                });
+                considerationDetailsHTML += '</ul>';
+                const decisionContext = currentDecisionTitle ? " " + translations[currentLanguage].summaryForDecision.replace('{title}', currentDecisionTitle) : "";
+                summarySectionContent.innerHTML = `
+                    <h4 class="font-semibold text-lg mb-2 text-text">${translations[currentLanguage].summaryRecommendationTitle}${decisionContext}:</h4>
+                    <p class="text-sm">${translations[currentLanguage].summaryBestIs}
+                        <strong class="font-bold text-emerald-600">${bestAlternative.alternativeName}</strong>
+                        ${translations[currentLanguage].summaryWithValue}
+                        <strong class="font-bold text-emerald-600">${bestAlternative.sawScore.toFixed(4)}</strong>.
+                    </p>
+                    <hr class="my-3 border-slate-200">
+                    <h5 class="font-semibold text-md mb-1 text-text">${translations[currentLanguage].summaryConsiderationTitle}</h5>
+                    ${considerationDetailsHTML}
+                `;
             }
 
-            formKriteria.addEventListener('submit', function(event) {
+            function handleAddCriterion(event) {
                 event.preventDefault();
                 criteriaErrorDiv.textContent = '';
                 const name = formKriteria.criterion_name.value.trim();
                 const weight = parseFloat(criterionWeightInput.value);
                 const type = formKriteria.criterion_type.value;
-
-                if (!name) {
-                    criteriaErrorDiv.textContent = 'Nama kriteria tidak boleh kosong.';
-                    formKriteria.criterion_name.classList.add('input-error');
+                if (!name) { criteriaErrorDiv.textContent = translations[currentLanguage].errorCriterionName; }
+                else if (isNaN(weight) || weight <= 0) { criteriaErrorDiv.textContent = translations[currentLanguage].errorWeightPositive; }
+                else if (criteria.find(c => c.name.toLowerCase() === name.toLowerCase())) { criteriaErrorDiv.textContent = translations[currentLanguage].errorCriterionExists.replace('{name}', name); }
+                else if (weight > parseFloat((totalWeightCap - currentAllocatedWeight).toFixed(10)) + 1e-9) { criteriaErrorDiv.textContent = translations[currentLanguage].errorWeightBudget; }
+                else {
+                    criteria.push({ name, weight, type });
+                    currentAllocatedWeight = parseFloat((currentAllocatedWeight + weight).toFixed(10));
+                    alternatives.forEach(alt => { alt.scores[name] = undefined; });
+                    renderCriteriaTable();
+                    formKriteria.reset();
+                    criterionWeightInput.value = '';
+                    updateWeightInputState();
+                    showToast(translations[currentLanguage].toastCriterionAdded.replace('{name}', name));
                     return;
                 }
-                formKriteria.criterion_name.classList.remove('input-error');
+                showToast(translations[currentLanguage].toastGenericError, 'error');
+            }
 
-                if (isNaN(weight) || weight <= 0) { 
-                    criteriaErrorDiv.textContent = 'Bobot harus angka positif.';
-                    criterionWeightInput.classList.add('input-error');
-                    return;
-                }
-                 if (weight < parseFloat(criterionWeightInput.min)) {
-                    criteriaErrorDiv.textContent = `Bobot minimal adalah ${criterionWeightInput.min}.`;
-                    criterionWeightInput.classList.add('input-error');
-                    return;
-                }
-
-                const remainingBudget = parseFloat((totalWeightCap - currentAllocatedWeight).toFixed(10));
-                if (weight > remainingBudget + 1e-9) { 
-                    criteriaErrorDiv.textContent = `Bobot (${weight}) melebihi sisa budget (${remainingBudget.toFixed(2)}). Maks: ${parseFloat(criterionWeightInput.max).toFixed(2)}.`;
-                    criterionWeightInput.classList.add('input-error');
-                    return;
-                }
-                criterionWeightInput.classList.remove('input-error');
-
-                if (criteria.find(c => c.name === name)) {
-                    criteriaErrorDiv.textContent = `Kriteria '${name}' sudah ada.`;
-                    return;
-                }
-
-                criteria.push({ name, weight, type });
-                currentAllocatedWeight = parseFloat((currentAllocatedWeight + weight).toFixed(10)); 
-
-                alternatives.forEach(alt => {
-                    if (alt.scores[name] === undefined) {
-                        alt.scores[name] = 0; 
-                    }
-                });
-
-                renderCriteriaTable();
-                formKriteria.reset(); 
-                criterionWeightInput.value = ''; 
-                updateWeightInputState(); 
-                showToast(`Kriteria '${name}' berhasil ditambahkan.`);
-            });
-
-            formAlternatif.addEventListener('submit', function(event) {
+            function handleAddAlternative(event) {
                 event.preventDefault();
                 alternativesErrorDiv.textContent = '';
                 const name = formAlternatif.alternative_name.value.trim();
-
-                if (!name) {
-                    alternativesErrorDiv.textContent = 'Nama alternatif tidak boleh kosong.';
-                    formAlternatif.alternative_name.classList.add('input-error');
+                if (!name) { alternativesErrorDiv.textContent = translations[currentLanguage].errorAlternativeName; }
+                else if (alternatives.find(alt => alt.name.toLowerCase() === name.toLowerCase())) { alternativesErrorDiv.textContent = translations[currentLanguage].errorAlternativeExists.replace('{name}', name); }
+                else {
+                    const newAlternative = { name, scores: {} };
+                    criteria.forEach(c => { newAlternative.scores[c.name] = undefined; });
+                    alternatives.push(newAlternative);
+                    renderAlternativesList();
+                    formAlternatif.reset();
+                    showToast(translations[currentLanguage].toastAlternativeAdded.replace('{name}', name));
                     return;
                 }
-                formAlternatif.alternative_name.classList.remove('input-error');
+                showToast(translations[currentLanguage].toastGenericError, 'error');
+            }
 
-                if (alternatives.find(alt => alt.name === name)) {
-                    alternativesErrorDiv.textContent = `Alternatif '${name}' sudah ada.`;
-                    return;
-                }
-                
-                const newAlternative = { name, scores: {} };
-                criteria.forEach(c => {
-                    newAlternative.scores[c.name] = 0; 
-                });
-
-                alternatives.push(newAlternative);
-                renderAlternativesList();
-                formAlternatif.reset();
-                showToast(`Alternatif '${name}' berhasil ditambahkan.`);
-            });
-
-            saveScoresButton.addEventListener('click', function() {
+            function handleSaveScores() {
                 matriksErrorDiv.textContent = '';
                 saveScoresMessageDiv.textContent = '';
                 let allScoresValid = true;
-
                 document.querySelectorAll('.score-input').forEach(input => {
                     const altName = input.dataset.altName;
                     const critName = input.dataset.critName;
-                    const value = parseFloat(input.value);
-
-                    if (isNaN(value)) { 
-                        matriksErrorDiv.textContent = `Nilai untuk ${altName} - ${critName} tidak valid. Harap isi semua skor dengan angka.`;
+                    if (input.value.trim() === '') {
+                        matriksErrorDiv.textContent = translations[currentLanguage].errorEmptyScore.replace('{altName}', altName).replace('{critName}', critName);
                         input.classList.add('input-error');
-                        allScoresValid = false;
-                        return; 
+                        allScoresValid = false; return;
+                    }
+                    const value = parseFloat(input.value);
+                    if (isNaN(value)) {
+                        matriksErrorDiv.textContent = translations[currentLanguage].errorInvalidScore.replace('{altName}', altName).replace('{critName}', critName);
+                        input.classList.add('input-error');
+                        allScoresValid = false; return;
                     }
                     input.classList.remove('input-error');
-                    
                     const alternative = alternatives.find(alt => alt.name === altName);
-                    if (alternative) {
-                        alternative.scores[critName] = value;
-                    }
+                    if (alternative) { alternative.scores[critName] = value; }
                 });
-
                 if (allScoresValid) {
-                    saveScoresMessageDiv.textContent = 'Semua skor berhasil disimpan!';
-                    showToast('Skor berhasil disimpan.');
+                    showToast(translations[currentLanguage].toastScoresSaved);
                 } else {
-                    showToast('Gagal menyimpan skor, periksa input.', 'error');
+                    showToast(translations[currentLanguage].toastSaveFailed, 'error');
                 }
-                updateWeightInputState(); 
-            });
-            
-            hitungSawButton.addEventListener('click', function() {
+                updateWeightInputState();
+            }
+
+            function handleCalculateSAW() {
                 calculationErrorDiv.textContent = '';
-                tabelHasilBody.innerHTML = '';
-                summarySectionContent.innerHTML = '<p class="italic text-sm">Menghitung...</p>'; 
-
-                if (criteria.length === 0) {
-                    calculationErrorDiv.textContent = 'Tidak ada kriteria. Tambahkan kriteria terlebih dahulu.';
-                    showToast('Tidak ada kriteria.', 'error');
-                    summarySectionContent.innerHTML = '<p class="italic text-sm">Tidak dapat membuat kesimpulan, kriteria kosong.</p>';
-                    return;
+                if (criteria.length === 0 ) {
+                     calculationErrorDiv.textContent = translations[currentLanguage].errorNoCriteria;
+                     showToast(translations[currentLanguage].errorNoCriteria, 'error'); return;
                 }
-                if (alternatives.length === 0) {
-                    calculationErrorDiv.textContent = 'Tidak ada alternatif. Tambahkan alternatif terlebih dahulu.';
-                    showToast('Tidak ada alternatif.', 'error');
-                    summarySectionContent.innerHTML = '<p class="italic text-sm">Tidak dapat membuat kesimpulan, alternatif kosong.</p>';
-                    return;
+                if (alternatives.length === 0 ) {
+                     calculationErrorDiv.textContent = translations[currentLanguage].errorNoAlternatives;
+                     showToast(translations[currentLanguage].errorNoAlternatives, 'error'); return;
                 }
-
                 if (Math.abs(currentAllocatedWeight - totalWeightCap) > 1e-9) {
-                    calculationErrorDiv.textContent = `Total bobot kriteria harus tepat ${totalWeightCap}. Saat ini total bobot adalah ${currentAllocatedWeight.toFixed(2)}.`;
-                    showToast(`Total bobot kriteria harus tepat ${totalWeightCap}.`, 'error');
-                    summarySectionContent.innerHTML = `<p class="italic text-sm">Tidak dapat membuat kesimpulan, total bobot kriteria tidak ${totalWeightCap}.</p>`;
-                    return;
+                    calculationErrorDiv.textContent = translations[currentLanguage].errorWeightTotal.replace('{total}', totalWeightCap);
+                    showToast(calculationErrorDiv.textContent, 'error'); return;
                 }
-
-
-                for (const alt of alternatives) {
+                 for (const alt of alternatives) {
                     for (const crit of criteria) {
-                        if (alt.scores[crit.name] === undefined || alt.scores[crit.name] === '' || isNaN(parseFloat(alt.scores[crit.name]))) {
-                            calculationErrorDiv.textContent = `Skor untuk ${alt.name} - ${crit.name} belum diisi atau tidak valid. Harap simpan semua skor terlebih dahulu.`;
-                            showToast('Skor belum lengkap atau tidak valid.', 'error');
-                            summarySectionContent.innerHTML = `<p class="italic text-sm">Tidak dapat membuat kesimpulan, skor untuk ${alt.name} - ${crit.name} tidak valid.</p>`;
-                            return;
+                        if (alt.scores[crit.name] === undefined || isNaN(parseFloat(alt.scores[crit.name]))) {
+                            calculationErrorDiv.textContent = translations[currentLanguage].errorScoresNotSaved.replace('{altName}', alt.name).replace('{critName}', crit.name);
+                            showToast(calculationErrorDiv.textContent, 'error'); return;
                         }
                     }
                 }
-
                 const totalEnteredWeight = criteria.reduce((sum, c) => sum + c.weight, 0);
-                if (totalEnteredWeight === 0) { 
-                    calculationErrorDiv.textContent = 'Total bobot mentah kriteria yang diinput adalah nol. Tidak dapat melakukan normalisasi bobot.';
-                    showToast('Total bobot mentah kriteria nol.', 'error');
-                    summarySectionContent.innerHTML = '<p class="italic text-sm">Tidak dapat membuat kesimpulan, total bobot mentah kriteria nol.</p>';
-                    return;
-                }
                 const normalizedWeights = {};
-                criteria.forEach(c => {
-                    normalizedWeights[c.name] = c.weight / totalEnteredWeight; 
-                });
-
-                const normalizedDecisionMatrix = alternatives.map(alt => ({
-                    name: alt.name,
-                    normalizedScores: {}
-                }));
-
+                criteria.forEach(c => { normalizedWeights[c.name] = c.weight / totalEnteredWeight; });
+                const normalizedDecisionMatrix = alternatives.map(alt => ({ name: alt.name, normalizedScores: {} }));
                 criteria.forEach(crit => {
                     const critScores = alternatives.map(alt => alt.scores[crit.name]);
-                    
                     if (crit.type === 'benefit') {
                         const maxVal = Math.max(...critScores);
-                        if (maxVal === 0) { 
-                             alternatives.forEach((alt, index) => {
-                                normalizedDecisionMatrix[index].normalizedScores[crit.name] = 0; 
-                            });
-                        } else {
-                            alternatives.forEach((alt, index) => {
-                                normalizedDecisionMatrix[index].normalizedScores[crit.name] = alt.scores[crit.name] / maxVal;
-                            });
-                        }
-                    } else { 
+                        alternatives.forEach((alt, index) => {
+                            normalizedDecisionMatrix[index].normalizedScores[crit.name] = maxVal === 0 ? 0 : alt.scores[crit.name] / maxVal;
+                        });
+                    } else {
                         const minVal = Math.min(...critScores);
                         alternatives.forEach((alt, index) => {
-                            if (alt.scores[crit.name] === 0) { 
-                                normalizedDecisionMatrix[index].normalizedScores[crit.name] = 1;
-                            } else if (minVal === 0 && alt.scores[crit.name] !==0) { 
+                             if(alt.scores[crit.name] === 0) {
                                 normalizedDecisionMatrix[index].normalizedScores[crit.name] = 0;
-                            } else if (minVal === 0 && alt.scores[crit.name] === 0) { 
-                                normalizedDecisionMatrix[index].normalizedScores[crit.name] = 1; 
-                            }
-                            else { 
+                             } else {
                                 normalizedDecisionMatrix[index].normalizedScores[crit.name] = minVal / alt.scores[crit.name];
-                            }
+                             }
                         });
                     }
                 });
-
                 const sawResults = normalizedDecisionMatrix.map(altData => {
                     let sawScore = 0;
                     criteria.forEach(crit => {
@@ -486,23 +528,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                     return { alternativeName: altData.name, sawScore };
                 });
+                sawResults.sort((a, b) => b.sawScore - a.sawScore);
+                sawResults.forEach((res, index) => { res.rank = index + 1; });
+                renderResultsTable(sawResults);
+                showToast(translations[currentLanguage].toastCalculationSuccess);
+            }
 
-                sawResults.sort((a, b) => b.sawScore - a.sawScore); 
-                sawResults.forEach((res, index) => {
-                    res.rank = index + 1;
-                });
-
-                renderResultsTable(sawResults); 
-                showToast('Perhitungan SAW berhasil!');
-            });
-
-            resetAllButton.addEventListener('click', function() {
-                if (confirm("Apakah Anda yakin ingin mereset semua data? Data yang belum disimpan akan hilang.")) {
+            function handleResetAll() {
+                if (confirm(translations[currentLanguage].confirmReset)) {
+                    localStorage.removeItem('language');
                     window.location.reload();
                 }
-            });
-
-            updateWeightInputState(); 
-            renderCriteriaTable(); 
-            renderAlternativesList(); 
+            }
         });
