@@ -5,9 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Pendukung Keputusan Metode SAW</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#14b8a6',
+                        secondary: '#475569', 
+                        background: '#f8fafc',
+                        card: '#ffffff',
+                        text: '#1e293b', 
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body class="text-slate-700">
     <header class="bg-card/80 backdrop-blur-sm shadow-sm sticky top-0 z-50 border-b border-slate-200/80">
@@ -200,24 +216,7 @@
             <p class="text-sm">© <span id="currentYear"></span> Sistem Pendukung Keputusan Metode SAW. <a href="https://instagram.com/baronnnd_" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline font-medium">Baron</a>.</p>
         </div>
     </footer>
-    
-</body>
     <script src="script.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#14b8a6',
-                        secondary: '#475569', 
-                        background: '#f8fafc',
-                        card: '#ffffff',
-                        text: '#1e293b', 
-                    }
-                }
-            }
-        }
-    </script>
-    <script src="https://cdn.tailwindcss.com"></script>
+</body>
 </html>
 
