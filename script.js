@@ -159,11 +159,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     noResults: "Tidak ada hasil peringkat. Periksa input skor Anda.",
                 }
             };
-
             let currentLanguage = localStorage.getItem('language') || 'id';
-
             const langToggleBtn = document.getElementById('lang-toggle');
-            
             const decisionTitleInput = document.getElementById('decision_title');
             const formKriteria = document.getElementById('formKriteria');
             const criterionWeightInput = document.getElementById('criterion_weight');
@@ -186,13 +183,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const toastContainer = document.getElementById('toast-container');
             const summarySectionContent = document.getElementById('summarySectionContent');
             document.getElementById('currentYear').textContent = new Date().getFullYear();
-
             const totalWeightCap = 100;
             let currentAllocatedWeight = 0;
             let currentDecisionTitle = "";
             let criteria = [];
             let alternatives = [];
-
             function translatePage(lang) {
                 document.querySelectorAll('[data-lang-key]').forEach(el => {
                     const key = el.dataset.langKey;
@@ -209,28 +204,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 renderCriteriaTable();
                 renderAlternativesList();
             }
-            
             langToggleBtn.addEventListener('click', () => {
                 currentLanguage = currentLanguage === 'id' ? 'en' : 'id';
                 langToggleBtn.textContent = currentLanguage === 'id' ? 'EN' : 'ID';
                 localStorage.setItem('language', currentLanguage);
                 translatePage(currentLanguage);
             });
-
             langToggleBtn.textContent = currentLanguage === 'id' ? 'EN' : 'ID';
-            
             translatePage(currentLanguage);
-
             decisionTitleInput.addEventListener('input', function (event) {
                 currentDecisionTitle = event.target.value.trim();
             });
-
             formKriteria.addEventListener('submit', handleAddCriterion);
             formAlternatif.addEventListener('submit', handleAddAlternative);
             saveScoresButton.addEventListener('click', handleSaveScores);
             hitungSawButton.addEventListener('click', handleCalculateSAW);
             resetAllButton.addEventListener('click', handleResetAll);
-
             function updateWeightInputState() {
                 const remainingBudget = parseFloat((totalWeightCap - currentAllocatedWeight).toFixed(10));
                 criterionWeightInput.max = Math.max(0, remainingBudget).toFixed(10);
@@ -253,7 +242,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     remainingWeightInfoSpan.className = 'text-xs text-slate-500 mt-1.5 block';
                 }
             }
-
             function showToast(message, type = 'success') {
                 const toast = document.createElement('div');
                 const icon = type === 'success' ? '✓' : '×';
@@ -267,7 +255,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     setTimeout(() => toast.remove(), 300);
                 }, 2700);
             }
-            
             function renderCriteriaTable() {
                 tabelKriteriaBody.innerHTML = '';
                 if (criteria.length === 0) {
@@ -284,7 +271,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 renderScoreMatrix();
                 updateWeightInputState();
             }
-
             function renderAlternativesList() {
                 daftarAlternatifUl.innerHTML = '';
                 if (alternatives.length === 0) {
@@ -300,7 +286,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 renderScoreMatrix();
                 updateWeightInputState();
             }
-
             function renderScoreMatrix() {
                 tabelMatriksKeputusanHead.innerHTML = '';
                 tabelMatriksKeputusanBody.innerHTML = '';
@@ -315,24 +300,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 saveScoresButton.classList.remove('hidden');
                 const headerRow = tabelMatriksKeputusanHead.insertRow();
                 const thAlt = document.createElement('th');
-                thAlt.className = "px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider";
                 thAlt.textContent = translations[currentLanguage].alternativeHeader;
                 headerRow.appendChild(thAlt);
                 criteria.forEach(c => {
                     const thCrit = document.createElement('th');
-                    thCrit.className = "px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider";
                     thCrit.textContent = c.name;
                     headerRow.appendChild(thCrit);
                 });
                 alternatives.forEach(alt => {
                     const altRow = tabelMatriksKeputusanBody.insertRow();
-                    altRow.className = "hover:bg-slate-50 transition-colors duration-150";
                     const cellAltName = altRow.insertCell();
-                    cellAltName.className = "px-6 py-4 whitespace-nowrap text-sm font-medium";
+                    cellAltName.className = "whitespace-nowrap text-sm font-medium";
                     cellAltName.textContent = alt.name;
                     criteria.forEach(crit => {
                         const cell = altRow.insertCell();
-                        cell.className = "px-6 py-4 whitespace-nowrap text-sm";
+                        cell.className = "whitespace-nowrap text-sm";
                         const input = document.createElement('input');
                         input.type = 'number';
                         input.step = 'any';
@@ -346,13 +328,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
                 updateWeightInputState();
             }
-
             function renderResultsTable(results) {
                 tabelHasilBody.innerHTML = '';
                 summarySectionContent.innerHTML = '';
                 calculationErrorDiv.textContent = '';
                 if (!results || results.length === 0) {
-                     tabelHasilBody.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-sm text-slate-500 italic">${translations[currentLanguage].noResults}</td></tr>`;
+                     tabelHasilBody.innerHTML = `<tr><td colspan="3" class="text-center text-sm text-slate-500 italic">${translations[currentLanguage].noResults}</td></tr>`;
                      summarySectionContent.innerHTML = `<p class="italic text-sm text-slate-500">${translations[currentLanguage].summaryPlaceholder.replace('dilakukan.', 'tidak ada hasil.')}</p>`;
                     return;
                 }
@@ -360,13 +341,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     const row = tabelHasilBody.insertRow();
                     row.className = res.rank === 1 ? "highlight-row" : "hover:bg-slate-50";
                     const rankCell = row.insertCell();
-                    rankCell.className = "px-6 py-4 whitespace-nowrap text-sm font-medium " + (res.rank === 1 ? "highlight-text" : "");
+                    rankCell.className = "whitespace-nowrap text-sm font-medium " + (res.rank === 1 ? "highlight-text" : "");
                     rankCell.textContent = res.rank;
                     const nameCell = row.insertCell();
-                    nameCell.className = "px-6 py-4 whitespace-nowrap text-sm " + (res.rank === 1 ? "highlight-text font-semibold" : "");
+                    nameCell.className = "whitespace-nowrap text-sm " + (res.rank === 1 ? "highlight-text font-semibold" : "");
                     nameCell.textContent = res.alternativeName;
                     const scoreCell = row.insertCell();
-                    scoreCell.className = "px-6 py-4 whitespace-nowrap text-sm " + (res.rank === 1 ? "highlight-text font-semibold" : "text-slate-500");
+                    scoreCell.className = "whitespace-nowrap text-sm " + (res.rank === 1 ? "highlight-text font-semibold" : "text-slate-500");
                     scoreCell.textContent = res.sawScore.toFixed(4);
                 });
                 const bestAlternative = results[0];
@@ -395,16 +376,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 summarySectionContent.innerHTML = `
                     <h4 class="font-semibold text-lg mb-2 text-text">${translations[currentLanguage].summaryRecommendationTitle}${decisionContext}:</h4>
                     <p class="text-sm">${translations[currentLanguage].summaryBestIs}
-                        <strong class="font-bold text-emerald-600">${bestAlternative.alternativeName}</strong>
+                        <strong class="font-bold text-teal-600">${bestAlternative.alternativeName}</strong>
                         ${translations[currentLanguage].summaryWithValue}
-                        <strong class="font-bold text-emerald-600">${bestAlternative.sawScore.toFixed(4)}</strong>.
+                        <strong class="font-bold text-teal-600">${bestAlternative.sawScore.toFixed(4)}</strong>.
                     </p>
                     <hr class="my-3 border-slate-200">
                     <h5 class="font-semibold text-md mb-1 text-text">${translations[currentLanguage].summaryConsiderationTitle}</h5>
                     ${considerationDetailsHTML}
                 `;
             }
-            
             function handleAddCriterion(event) {
                 event.preventDefault();
                 criteriaErrorDiv.textContent = '';
@@ -428,7 +408,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 showToast(translations[currentLanguage].toastGenericError, 'error');
             }
-
             function handleAddAlternative(event) {
                 event.preventDefault();
                 alternativesErrorDiv.textContent = '';
@@ -446,7 +425,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 showToast(translations[currentLanguage].toastGenericError, 'error');
             }
-
             function handleSaveScores() {
                 matriksErrorDiv.textContent = '';
                 saveScoresMessageDiv.textContent = '';
@@ -476,7 +454,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 updateWeightInputState();
             }
-
             function handleCalculateSAW() {
                 calculationErrorDiv.textContent = '';
                 if (criteria.length === 0 ) {
@@ -533,7 +510,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 renderResultsTable(sawResults);
                 showToast(translations[currentLanguage].toastCalculationSuccess);
             }
-
             function handleResetAll() {
                 if (confirm(translations[currentLanguage].confirmReset)) {
                     localStorage.removeItem('language');
@@ -541,18 +517,3 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         });
-    </script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#0891b2', 
-                        secondary: '#475569', 
-                        background: '#f1f5f9', 
-                        card: '#ffffff',
-                        text: '#1e293b', 
-                    }
-                }
-            }
-        }
