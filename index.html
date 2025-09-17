@@ -4,27 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Pendukung Keputusan Metode SAW</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#14b8a6',
+                        secondary: '#475569', 
+                        background: '#f8fafc',
+                        card: '#ffffff',
+                        text: '#1e293b', 
+                    }
+                }
+            }
+        }
+    </script>
     <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animated-section {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
         body {
             font-family: 'Inter', sans-serif;
-            @apply bg-background text-text transition-colors duration-300;
+            background-color: #f8fafc;
+            background-image: radial-gradient(#dbeafe 1px, transparent 1px);
+            background-size: 2rem 2rem;
+            @apply text-text transition-colors duration-300;
         }
-
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Poppins', sans-serif;
         }
-
         .section-card {
-            @apply bg-card border border-slate-200;
+            @apply bg-card border border-slate-200/80;
             border-radius: 0.75rem;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-            transition: box-shadow 0.3s ease-in-out;
+            transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
         }
-
+        .section-card:hover {
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+        }
         .input-field {
             @apply border border-slate-300 bg-slate-50 transition-all duration-200 ease-in-out rounded-md;
         }
@@ -34,56 +66,60 @@
         .input-error {
             @apply border-rose-500 ring-2 ring-rose-500/20;
         }
-
         .button-base {
             @apply px-5 py-2.5 rounded-lg font-semibold shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 ease-in-out;
         }
-
         .highlight-row {
-             @apply bg-emerald-100;
+             @apply bg-teal-100/60;
         }
         .highlight-text {
-            @apply text-emerald-800;
+            @apply text-teal-800 font-semibold;
         }
-
         .toast {
             opacity: 1;
             transform: translateY(0);
             @apply transition-opacity transition-transform duration-300 ease-in-out shadow-lg;
         }
-
         .error-text {
             @apply text-rose-600 font-medium;
         }
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        th, td {
+            @apply px-6 py-4;
+        }
+        thead th {
+            @apply text-left text-xs font-semibold text-slate-500 uppercase tracking-wider;
+        }
+        tbody tr {
+            @apply border-b border-slate-200 last:border-b-0;
+        }
     </style>
 </head>
-
 <body class="text-slate-700">
-    <header class="bg-card shadow-sm sticky top-0 z-50 border-b border-slate-200">
+    <header class="bg-card/80 backdrop-blur-sm shadow-sm sticky top-0 z-50 border-b border-slate-200/80">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <h1 class="text-xl md:text-2xl font-bold tracking-tight text-text">
-                <span class="text-primary">SPK</span> Metode SAW
+                <span class="text-primary">SAW</span> Decision Helper
             </h1>
             <button id="lang-toggle" type="button" class="text-slate-500 hover:bg-slate-100 focus:outline-none focus:ring-4 focus:ring-slate-200 rounded-lg text-sm p-2.5 font-bold w-12 text-center">
                 EN
             </button>
         </div>
     </header>
-
-    <main class="container mx-auto max-w-7xl p-4 md:p-6 mt-6 mb-6">
-
+    <main class="container mx-auto max-w-7xl p-4 md:p-6 mt-8 mb-6">
         <div id="toast-container" class="fixed bottom-5 right-5 z-[100] w-full max-w-xs sm:max-w-sm"></div>
-
-        <section class="mb-8 p-6 section-card text-center">
-            <h2 class="text-3xl font-bold text-text mb-2" data-lang-key="welcomeTitle">Selamat Datang!</h2>
+        <section class="mb-10 p-6 section-card text-center animated-section">
+            <h2 class="text-3xl md:text-4xl font-bold text-text mb-3" data-lang-key="welcomeTitle">Selamat Datang!</h2>
             <p class="text-md text-secondary leading-relaxed max-w-3xl mx-auto" data-lang-key="welcomeSubtitle">
                 Aplikasi ini dirancang untuk membantu Anda mengambil keputusan kompleks menggunakan metode <strong class="text-primary">Simple Additive Weighting (SAW)</strong>. Definisikan kriteria, beri bobot, nilai alternatif, dan dapatkan peringkat akhir yang objektif.
             </p>
         </section>
-
-        <section class="p-6 section-card mb-8">
-            <h2 class="text-2xl font-semibold mb-4 text-center" data-lang-key="guideTitle">Panduan Lengkap Penggunaan</h2>
-            <div class="space-y-6 text-sm text-secondary border-t border-slate-200 pt-6">
+        <section class="p-6 md:p-8 section-card mb-10 animated-section" style="animation-delay: 150ms;">
+            <h2 class="text-2xl font-semibold mb-5 text-center" data-lang-key="guideTitle">Panduan Lengkap Penggunaan</h2>
+            <div class="text-sm text-secondary border-t border-slate-200 pt-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                     <div class="flex items-start gap-4">
                         <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">1</div>
@@ -123,16 +159,14 @@
                 </div>
             </div>
         </section>
-
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
             <div class="xl:col-span-2 space-y-8">
-                 <section class="p-6 section-card">
+                 <section class="p-6 section-card animated-section" style="animation-delay: 300ms;">
                      <label for="decision_title" class="block text-xl font-semibold mb-3 text-text" data-lang-key="decisionTitleLabel">Judul Keputusan Anda</label>
                      <input type="text" id="decision_title" name="decision_title" class="input-field block w-full px-4 py-3 rounded-lg text-md" data-lang-key="decisionTitlePlaceholder" placeholder="Contoh: Pemilihan Smartphone Terbaik 2025">
                  </section>
-
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-                    <section class="p-6 section-card">
+                    <section class="p-6 section-card animated-section" style="animation-delay: 400ms;">
                         <h2 class="text-xl font-semibold mb-5 border-b pb-3 border-slate-200" data-lang-key="criteriaTitle">1. Input Kriteria & Bobot</h2>
                         <form id="formKriteria" class="space-y-5">
                             <div>
@@ -152,13 +186,12 @@
                                 </select>
                             </div>
                             <div id="criteriaError" class="error-text text-sm"></div>
-                            <button type="submit" id="addCriterionButton" class="button-base text-white w-full bg-gradient-to-r from-cyan-600 to-primary hover:shadow-lg hover:shadow-cyan-500/40 focus:ring-primary">
+                            <button type="submit" id="addCriterionButton" class="button-base text-white w-full bg-gradient-to-r from-teal-500 to-cyan-600 hover:shadow-lg hover:shadow-cyan-500/40 focus:ring-primary">
                                 <span data-lang-key="addCriterionButton">Tambah Kriteria</span>
                             </button>
                         </form>
                     </section>
-
-                    <section class="p-6 section-card">
+                    <section class="p-6 section-card animated-section" style="animation-delay: 450ms;">
                         <h2 class="text-xl font-semibold mb-5 border-b pb-3 border-slate-200" data-lang-key="alternativesTitle">2. Input Alternatif</h2>
                         <form id="formAlternatif" class="flex items-end gap-3">
                             <div class="flex-grow">
@@ -177,16 +210,15 @@
                         </div>
                     </section>
                 </div>
-
-                <section class="p-6 section-card">
+                <section class="p-6 section-card animated-section" style="animation-delay: 500ms;">
                     <h2 class="text-xl font-semibold mb-5 border-b pb-3 border-slate-200" data-lang-key="matrixTitle">3. Input Matriks Keputusan</h2>
                     <p class="text-sm text-secondary mb-4" data-lang-key="matrixDesc">Masukkan nilai untuk setiap alternatif, lalu klik "Simpan Skor" sebelum menghitung.</p>
                     <div id="matriksError" class="error-text mb-3 text-sm"></div>
                     <div class="overflow-x-auto rounded-lg border border-slate-200">
-                        <table id="tabelMatriksKeputusan" class="min-w-full divide-y divide-slate-200">
-                            <thead class="bg-slate-100">
+                        <table id="tabelMatriksKeputusan" class="min-w-full">
+                            <thead class="bg-slate-50">
                             </thead>
-                            <tbody class="divide-y divide-slate-200">
+                            <tbody>
                             </tbody>
                         </table>
                     </div>
@@ -195,58 +227,54 @@
                     </button>
                     <div id="saveScoresMessage" class="text-emerald-600 mt-3 text-sm font-medium"></div>
                 </section>
-
-                <section class="p-6 section-card">
+                <section class="p-6 section-card animated-section" style="animation-delay: 550ms;">
                     <h2 class="text-xl font-semibold mb-5 border-b pb-3 border-slate-200" data-lang-key="resultsTitle">4. Proses Perhitungan & Hasil</h2>
-                    <button id="hitungSawButton" class="button-base bg-gradient-to-r from-cyan-500 to-blue-500 text-white w-full font-bold py-3.5 text-lg shadow-xl hover:shadow-2xl hover:shadow-cyan-500/40 focus:ring-cyan-500">
+                    <button id="hitungSawButton" class="button-base bg-gradient-to-r from-cyan-500 to-indigo-500 text-white w-full font-bold py-3.5 text-lg shadow-xl hover:shadow-2xl hover:shadow-cyan-500/40 focus:ring-cyan-500">
                        <span data-lang-key="calculateButton">Hitung & Tampilkan Peringkat</span>
                     </button>
                     <div id="calculationError" class="error-text mt-3 text-sm"></div>
                     <div class="mt-8">
                         <h3 class="text-lg font-medium mb-3" data-lang-key="rankingTitle">Hasil Peringkat:</h3>
                         <div class="overflow-x-auto rounded-lg border border-slate-200">
-                            <table id="tabelHasil" class="min-w-full divide-y divide-slate-200">
-                                <thead class="bg-slate-100">
+                            <table id="tabelHasil" class="min-w-full">
+                                <thead class="bg-slate-50">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-lang-key="rankHeader">Peringkat</th>
-                                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-lang-key="alternativeHeader">Alternatif</th>
-                                        <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-lang-key="sawScoreHeader">Nilai SAW</th>
+                                        <th data-lang-key="rankHeader">Peringkat</th>
+                                        <th data-lang-key="alternativeHeader">Alternatif</th>
+                                        <th data-lang-key="sawScoreHeader">Nilai SAW</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-slate-200">
+                                <tbody>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </section>
             </div>
-
             <div class="space-y-8">
-                <section class="p-6 section-card">
+                <section class="p-6 section-card animated-section" style="animation-delay: 400ms;">
                     <h3 class="text-lg font-medium mb-3" data-lang-key="criteriaListTitle">Daftar Kriteria Anda</h3>
                     <div class="overflow-x-auto rounded-lg border border-slate-200">
-                        <table id="tabelKriteria" class="min-w-full divide-y divide-slate-200">
-                            <thead class="bg-slate-100">
+                        <table id="tabelKriteria" class="min-w-full">
+                            <thead class="bg-slate-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-lang-key="nameHeader">Nama</th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-lang-key="weightHeader">Bobot</th>
-                                    <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-lang-key="typeHeader">Jenis</th>
+                                    <th data-lang-key="nameHeader">Nama</th>
+                                    <th data-lang-key="weightHeader">Bobot</th>
+                                    <th data-lang-key="typeHeader">Jenis</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-200">
+                            <tbody>
                             </tbody>
                         </table>
                     </div>
                 </section>
-
-                <section class="p-6 section-card">
+                <section class="p-6 section-card animated-section" style="animation-delay: 450ms;">
                      <h2 class="text-xl font-semibold mb-5" data-lang-key="summaryTitle">Kesimpulan & Rekomendasi</h2>
                      <div id="summarySectionContent" class="mt-2 p-5 bg-slate-50 border border-slate-200 rounded-xl shadow-inner min-h-[150px]">
                         <p class="italic text-sm text-slate-500" data-lang-key="summaryPlaceholder">Kesimpulan akan muncul di sini setelah perhitungan dilakukan.</p>
                      </div>
                 </section>
-
-                 <div class="mt-8 text-center p-6 section-card">
+                 <div class="mt-8 text-center p-6 section-card animated-section" style="animation-delay: 500ms;">
                     <h3 class="text-lg font-semibold mb-3" data-lang-key="resetTitle">Mulai Ulang?</h3>
                     <p class="text-sm text-secondary mb-4" data-lang-key="resetDesc">Aksi ini akan menghapus semua data yang telah Anda masukkan.</p>
                     <button id="resetAllButton" class="button-base text-white bg-gradient-to-r from-rose-600 to-red-500 hover:shadow-lg hover:shadow-rose-500/40 focus:ring-rose-500">
@@ -255,15 +283,12 @@
                 </div>
             </div>
         </div>
-
     </main>
-
     <footer class="mt-12 bg-card text-secondary py-8 text-center border-t border-slate-200">
         <div class="container mx-auto px-4">
-            <p class="text-sm" data-lang-key="footerText">© <span id="currentYear"></span> Aplikasi SPK Metode SAW. Dibuat oleh <a href="https://instagram.com/baronnnd_" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline font-medium">Baron</a>.</p>
+            <p class="text-sm">© <span id="currentYear"></span> Sistem Pendukung Keputusan Metode SAW. <a href="https://instagram.com/baronnnd_" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline font-medium">Baron</a>.</p>
         </div>
     </footer>
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const translations = {
@@ -426,11 +451,8 @@
                     noResults: "Tidak ada hasil peringkat. Periksa input skor Anda.",
                 }
             };
-
             let currentLanguage = localStorage.getItem('language') || 'id';
-
             const langToggleBtn = document.getElementById('lang-toggle');
-
             const decisionTitleInput = document.getElementById('decision_title');
             const formKriteria = document.getElementById('formKriteria');
             const criterionWeightInput = document.getElementById('criterion_weight');
@@ -453,13 +475,11 @@
             const toastContainer = document.getElementById('toast-container');
             const summarySectionContent = document.getElementById('summarySectionContent');
             document.getElementById('currentYear').textContent = new Date().getFullYear();
-
             const totalWeightCap = 100;
             let currentAllocatedWeight = 0;
             let currentDecisionTitle = "";
             let criteria = [];
             let alternatives = [];
-
             function translatePage(lang) {
                 document.querySelectorAll('[data-lang-key]').forEach(el => {
                     const key = el.dataset.langKey;
@@ -476,28 +496,22 @@
                 renderCriteriaTable();
                 renderAlternativesList();
             }
-
             langToggleBtn.addEventListener('click', () => {
                 currentLanguage = currentLanguage === 'id' ? 'en' : 'id';
                 langToggleBtn.textContent = currentLanguage === 'id' ? 'EN' : 'ID';
                 localStorage.setItem('language', currentLanguage);
                 translatePage(currentLanguage);
             });
-
             langToggleBtn.textContent = currentLanguage === 'id' ? 'EN' : 'ID';
-
             translatePage(currentLanguage);
-
             decisionTitleInput.addEventListener('input', function (event) {
                 currentDecisionTitle = event.target.value.trim();
             });
-
             formKriteria.addEventListener('submit', handleAddCriterion);
             formAlternatif.addEventListener('submit', handleAddAlternative);
             saveScoresButton.addEventListener('click', handleSaveScores);
             hitungSawButton.addEventListener('click', handleCalculateSAW);
             resetAllButton.addEventListener('click', handleResetAll);
-
             function updateWeightInputState() {
                 const remainingBudget = parseFloat((totalWeightCap - currentAllocatedWeight).toFixed(10));
                 criterionWeightInput.max = Math.max(0, remainingBudget).toFixed(10);
@@ -505,7 +519,7 @@
                 const budgetExactlyMet = Math.abs(currentAllocatedWeight - totalWeightCap) < 1e-9;
                 criterionWeightInput.disabled = budgetIsFullOrExceeded;
                 addCriterionButton.disabled = budgetIsFullOrExceeded;
-                const allScoresSaved = alternatives.every(alt =>
+                const allScoresSaved = alternatives.every(alt => 
                     criteria.every(crit => alt.scores[crit.name] !== undefined)
                 );
                 hitungSawButton.disabled = !(criteria.length > 0 && alternatives.length > 0 && budgetExactlyMet && allScoresSaved);
@@ -520,7 +534,6 @@
                     remainingWeightInfoSpan.className = 'text-xs text-slate-500 mt-1.5 block';
                 }
             }
-
             function showToast(message, type = 'success') {
                 const toast = document.createElement('div');
                 const icon = type === 'success' ? '✓' : '×';
@@ -534,7 +547,6 @@
                     setTimeout(() => toast.remove(), 300);
                 }, 2700);
             }
-
             function renderCriteriaTable() {
                 tabelKriteriaBody.innerHTML = '';
                 if (criteria.length === 0) {
@@ -551,7 +563,6 @@
                 renderScoreMatrix();
                 updateWeightInputState();
             }
-
             function renderAlternativesList() {
                 daftarAlternatifUl.innerHTML = '';
                 if (alternatives.length === 0) {
@@ -567,7 +578,6 @@
                 renderScoreMatrix();
                 updateWeightInputState();
             }
-
             function renderScoreMatrix() {
                 tabelMatriksKeputusanHead.innerHTML = '';
                 tabelMatriksKeputusanBody.innerHTML = '';
@@ -582,24 +592,21 @@
                 saveScoresButton.classList.remove('hidden');
                 const headerRow = tabelMatriksKeputusanHead.insertRow();
                 const thAlt = document.createElement('th');
-                thAlt.className = "px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider";
                 thAlt.textContent = translations[currentLanguage].alternativeHeader;
                 headerRow.appendChild(thAlt);
                 criteria.forEach(c => {
                     const thCrit = document.createElement('th');
-                    thCrit.className = "px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider";
                     thCrit.textContent = c.name;
                     headerRow.appendChild(thCrit);
                 });
                 alternatives.forEach(alt => {
                     const altRow = tabelMatriksKeputusanBody.insertRow();
-                    altRow.className = "hover:bg-slate-50 transition-colors duration-150";
                     const cellAltName = altRow.insertCell();
-                    cellAltName.className = "px-6 py-4 whitespace-nowrap text-sm font-medium";
+                    cellAltName.className = "whitespace-nowrap text-sm font-medium";
                     cellAltName.textContent = alt.name;
                     criteria.forEach(crit => {
                         const cell = altRow.insertCell();
-                        cell.className = "px-6 py-4 whitespace-nowrap text-sm";
+                        cell.className = "whitespace-nowrap text-sm";
                         const input = document.createElement('input');
                         input.type = 'number';
                         input.step = 'any';
@@ -613,13 +620,12 @@
                 });
                 updateWeightInputState();
             }
-
             function renderResultsTable(results) {
                 tabelHasilBody.innerHTML = '';
                 summarySectionContent.innerHTML = '';
                 calculationErrorDiv.textContent = '';
                 if (!results || results.length === 0) {
-                     tabelHasilBody.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-sm text-slate-500 italic">${translations[currentLanguage].noResults}</td></tr>`;
+                     tabelHasilBody.innerHTML = `<tr><td colspan="3" class="text-center text-sm text-slate-500 italic">${translations[currentLanguage].noResults}</td></tr>`;
                      summarySectionContent.innerHTML = `<p class="italic text-sm text-slate-500">${translations[currentLanguage].summaryPlaceholder.replace('dilakukan.', 'tidak ada hasil.')}</p>`;
                     return;
                 }
@@ -627,13 +633,13 @@
                     const row = tabelHasilBody.insertRow();
                     row.className = res.rank === 1 ? "highlight-row" : "hover:bg-slate-50";
                     const rankCell = row.insertCell();
-                    rankCell.className = "px-6 py-4 whitespace-nowrap text-sm font-medium " + (res.rank === 1 ? "highlight-text" : "");
+                    rankCell.className = "whitespace-nowrap text-sm font-medium " + (res.rank === 1 ? "highlight-text" : "");
                     rankCell.textContent = res.rank;
                     const nameCell = row.insertCell();
-                    nameCell.className = "px-6 py-4 whitespace-nowrap text-sm " + (res.rank === 1 ? "highlight-text font-semibold" : "");
+                    nameCell.className = "whitespace-nowrap text-sm " + (res.rank === 1 ? "highlight-text font-semibold" : "");
                     nameCell.textContent = res.alternativeName;
                     const scoreCell = row.insertCell();
-                    scoreCell.className = "px-6 py-4 whitespace-nowrap text-sm " + (res.rank === 1 ? "highlight-text font-semibold" : "text-slate-500");
+                    scoreCell.className = "whitespace-nowrap text-sm " + (res.rank === 1 ? "highlight-text font-semibold" : "text-slate-500");
                     scoreCell.textContent = res.sawScore.toFixed(4);
                 });
                 const bestAlternative = results[0];
@@ -662,16 +668,15 @@
                 summarySectionContent.innerHTML = `
                     <h4 class="font-semibold text-lg mb-2 text-text">${translations[currentLanguage].summaryRecommendationTitle}${decisionContext}:</h4>
                     <p class="text-sm">${translations[currentLanguage].summaryBestIs}
-                        <strong class="font-bold text-emerald-600">${bestAlternative.alternativeName}</strong>
+                        <strong class="font-bold text-teal-600">${bestAlternative.alternativeName}</strong>
                         ${translations[currentLanguage].summaryWithValue}
-                        <strong class="font-bold text-emerald-600">${bestAlternative.sawScore.toFixed(4)}</strong>.
+                        <strong class="font-bold text-teal-600">${bestAlternative.sawScore.toFixed(4)}</strong>.
                     </p>
                     <hr class="my-3 border-slate-200">
                     <h5 class="font-semibold text-md mb-1 text-text">${translations[currentLanguage].summaryConsiderationTitle}</h5>
                     ${considerationDetailsHTML}
                 `;
             }
-
             function handleAddCriterion(event) {
                 event.preventDefault();
                 criteriaErrorDiv.textContent = '';
@@ -695,7 +700,6 @@
                 }
                 showToast(translations[currentLanguage].toastGenericError, 'error');
             }
-
             function handleAddAlternative(event) {
                 event.preventDefault();
                 alternativesErrorDiv.textContent = '';
@@ -713,7 +717,6 @@
                 }
                 showToast(translations[currentLanguage].toastGenericError, 'error');
             }
-
             function handleSaveScores() {
                 matriksErrorDiv.textContent = '';
                 saveScoresMessageDiv.textContent = '';
@@ -743,7 +746,6 @@
                 }
                 updateWeightInputState();
             }
-
             function handleCalculateSAW() {
                 calculationErrorDiv.textContent = '';
                 if (criteria.length === 0 ) {
@@ -800,7 +802,6 @@
                 renderResultsTable(sawResults);
                 showToast(translations[currentLanguage].toastCalculationSuccess);
             }
-
             function handleResetAll() {
                 if (confirm(translations[currentLanguage].confirmReset)) {
                     localStorage.removeItem('language');
@@ -809,22 +810,6 @@
             }
         });
     </script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#0891b2',
-                        secondary: '#475569',
-                        background: '#f1f5f9',
-                        card: '#ffffff',
-                        text: '#1e293b',
-                    }
-                }
-            }
-        }
-    </script>
-    <script src="https://cdn.tailwindcss.com"></script>
 </body>
-
 </html>
+
