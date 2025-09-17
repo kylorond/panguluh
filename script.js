@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let currentLanguage = localStorage.getItem('language') || 'id';
 
             const langToggleBtn = document.getElementById('lang-toggle');
-
+            
             const decisionTitleInput = document.getElementById('decision_title');
             const formKriteria = document.getElementById('formKriteria');
             const criterionWeightInput = document.getElementById('criterion_weight');
@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 renderCriteriaTable();
                 renderAlternativesList();
             }
-
+            
             langToggleBtn.addEventListener('click', () => {
                 currentLanguage = currentLanguage === 'id' ? 'en' : 'id';
                 langToggleBtn.textContent = currentLanguage === 'id' ? 'EN' : 'ID';
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             langToggleBtn.textContent = currentLanguage === 'id' ? 'EN' : 'ID';
-
+            
             translatePage(currentLanguage);
 
             decisionTitleInput.addEventListener('input', function (event) {
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const budgetExactlyMet = Math.abs(currentAllocatedWeight - totalWeightCap) < 1e-9;
                 criterionWeightInput.disabled = budgetIsFullOrExceeded;
                 addCriterionButton.disabled = budgetIsFullOrExceeded;
-                const allScoresSaved = alternatives.every(alt =>
+                const allScoresSaved = alternatives.every(alt => 
                     criteria.every(crit => alt.scores[crit.name] !== undefined)
                 );
                 hitungSawButton.disabled = !(criteria.length > 0 && alternatives.length > 0 && budgetExactlyMet && allScoresSaved);
@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     setTimeout(() => toast.remove(), 300);
                 }, 2700);
             }
-
+            
             function renderCriteriaTable() {
                 tabelKriteriaBody.innerHTML = '';
                 if (criteria.length === 0) {
@@ -404,7 +404,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     ${considerationDetailsHTML}
                 `;
             }
-
+            
             function handleAddCriterion(event) {
                 event.preventDefault();
                 criteriaErrorDiv.textContent = '';
@@ -541,3 +541,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         });
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0891b2', 
+                        secondary: '#475569', 
+                        background: '#f1f5f9', 
+                        card: '#ffffff',
+                        text: '#1e293b', 
+                    }
+                }
+            }
+        }
